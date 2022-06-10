@@ -7,6 +7,7 @@
 - Button
 - Notification ( its not mine )
 - Dropdown
+- Toggle
 - Label
 - Slider ( bugs )
 - Text Box
