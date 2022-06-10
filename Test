@@ -1,1 +1,345 @@
-Test
+local Library = {} 
+
+do --/Destroy East
+    local ui = game:GetService("CoreGui"):FindFirstChild("East")
+	if ui then ui:Destroy()
+	end
+end
+
+function Library:CreateWindow()
+	
+	local East = Instance.new("ScreenGui")
+	local MainFrame = Instance.new("Frame")
+	local mainCorner = Instance.new("UICorner")
+	local SideBar = Instance.new("Frame")
+	local sideCorner = Instance.new("UICorner")
+	local coverCorner = Instance.new("Frame")
+	local allTabs = Instance.new("Frame")
+	local tabListing = Instance.new("UIListLayout")
+	local allPages = Instance.new("Frame")
+	local mainCorner_2 = Instance.new("UICorner")
+
+	East.Name = "East"
+	East.Parent = game.CoreGui	
+	East.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	East.ResetOnSpawn = false
+
+	MainFrame.Name = "MainFrame"
+	MainFrame.Parent = East
+	MainFrame.BackgroundColor3 = Color3.fromRGB(35, 38, 42)
+	MainFrame.Position = UDim2.new(0.396969676, 0, 0.302184463, 0)
+	MainFrame.Size = UDim2.new(0, 430, 0, 260)
+
+	mainCorner.CornerRadius = UDim.new(0, 3)
+	mainCorner.Name = "mainCorner"
+	mainCorner.Parent = MainFrame
+
+	SideBar.Name = "SideBar"
+	SideBar.Parent = MainFrame
+	SideBar.BackgroundColor3 = Color3.fromRGB(35, 38, 42)
+	SideBar.BorderSizePixel = 0
+	SideBar.Size = UDim2.new(0, 110, 0, 260)
+
+	sideCorner.CornerRadius = UDim.new(0, 3)
+	sideCorner.Name = "sideCorner"
+	sideCorner.Parent = SideBar
+
+	coverCorner.Name = "coverCorner"
+	coverCorner.Parent = SideBar
+	coverCorner.BackgroundColor3 = Color3.fromRGB(35, 38, 42)
+	coverCorner.BorderSizePixel = 0
+	coverCorner.Position = UDim2.new(0.943925261, 0, 0, 0)
+	coverCorner.Size = UDim2.new(0, 6, 0, 260)
+
+	allTabs.Name = "allTabs"
+	allTabs.Parent = SideBar
+	allTabs.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	allTabs.BackgroundTransparency = 1.000
+	allTabs.Position = UDim2.new(0.0500000007, 0, 0.0299999993, 0)
+	allTabs.Size = UDim2.new(0, 98, 0, 246)
+
+	tabListing.Name = "tabListing"
+	tabListing.Parent = allTabs
+	tabListing.SortOrder = Enum.SortOrder.LayoutOrder
+	tabListing.Padding = UDim.new(0, 2)
+
+	allPages.Name = "allPages"
+	allPages.Parent = MainFrame
+	allPages.BackgroundColor3 = Color3.fromRGB(39, 42, 47)
+	allPages.Position = UDim2.new(0.274418592, 0, 0.0269230772, 0)
+	allPages.Size = UDim2.new(0, 306, 0, 245)
+
+	mainCorner_2.CornerRadius = UDim.new(0, 3)
+	mainCorner_2.Name = "mainCorner"
+	mainCorner_2.Parent = allPages
+
+	local pagesFolder = Instance.new("Folder")
+
+	pagesFolder.Name = "pagesFolder"
+	pagesFolder.Parent = allPages
+
+-- Script :
+
+local function DGZPFEN_fake_script() -- MainFrame.LocalScript 
+	local script = Instance.new('LocalScript', MainFrame)
+
+	local players = game:service('Players');
+	local player = players.LocalPlayer;
+	local mouse = player:GetMouse();
+	local run = game:service('RunService');
+	local stepped = run.Stepped;
+	draggable = function(obj)
+		spawn(function()
+			obj.Active = true;
+			local minitial;
+			local initial;
+			local isdragging;
+			obj.InputBegan:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+					isdragging = true;
+					minitial = input.Position;
+					initial = obj.Position;
+					local con;
+					con = stepped:Connect(function()
+						if isdragging then
+							local delta = Vector3.new(mouse.X, mouse.Y, 0) - minitial;
+							obj.Position = UDim2.new(initial.X.Scale, initial.X.Offset + delta.X, initial.Y.Scale, initial.Y.Offset + delta.Y);
+						else
+							con:Disconnect();
+						end;
+					end);
+					input.Changed:Connect(function()
+						if input.UserInputState == Enum.UserInputState.End then
+							isdragging = false;
+						end;
+					end);
+				end;
+			end);
+		end)
+	end;
+	
+	draggable(script.Parent)
+end
+coroutine.wrap(DGZPFEN_fake_script)()
+	
+	local TabHandler = {}
+	
+	function TabHandler:CreateTab(tabname)
+		tabname = tabname or "New Tab"
+		local tabButton = Instance.new("TextButton")
+		local tabCorner = Instance.new("UICorner")
+		local newPage = Instance.new("ScrollingFrame") 
+		local elementsListing = Instance.new("UIListLayout") 
+
+		local elementsPadding = Instance.new("UIPadding")
+
+		elementsPadding.Name = "elementsPadding"
+		elementsPadding.Parent = newPage
+		elementsPadding.PaddingRight = UDim.new(0, 5)
+		elementsPadding.PaddingTop = UDim.new(0, 5)
+		
+		tabButton.Name = "tabButton"
+		tabButton.Parent = allTabs
+		tabButton.BackgroundColor3 = Color3.fromRGB(100, 0, 0)
+		tabButton.Size = UDim2.new(0, 99, 0, 25)
+		tabButton.Font = Enum.Font.Gotham
+		tabButton.Text = tabname -- Displays our custom text
+		tabButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+		tabButton.TextSize = 14.000
+		tabButton.AutoButtonColor = false	
+		tabButton.MouseButton1Click:Connect(function()
+			for i,v in next, pagesFolder:GetChildren() do -- We get all the pages that we added
+				v.Visible = false	-- then we make them invisible 
+			end 
+			newPage.Visible = true	-- We make current page visible but not others
+			
+			--Animations Below  -- Optional
+			for i,v in next, allTabs:GetChildren() do	-- We get all the elements inside the frame
+				if v:IsA("TextButton") then -- We can't animate UIListLayout, so we check if its a TextButton
+					game.TweenService:Create(v, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
+						BackgroundColor3 = Color3.fromRGB(150, 0, 0) -- We animate other Tab Buttons and making the current one seem Checked
+					}):Play()
+				end
+			end
+			game.TweenService:Create(tabButton, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
+				BackgroundColor3 = Color3.fromRGB(230, 0, 0) -- We animate other Tab Buttons and making the current one seem Checked
+			}):Play()
+		end)
+
+		tabCorner.CornerRadius = UDim.new(0, 3)
+		tabCorner.Name = "sideCorner"
+		tabCorner.Parent = tabButton
+		
+		newPage.Name = "newPage"
+		newPage.Parent = pagesFolder
+		newPage.Active = true
+		newPage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		newPage.BackgroundTransparency = 1.000
+		newPage.Size = UDim2.new(1, 0, 1, 0)
+		newPage.ScrollBarThickness = 5
+		newPage.Visible = false
+		newPage.ZIndex = 99
+
+		elementsListing.Name = "elementsListing"
+		elementsListing.Parent = newPage
+		elementsListing.HorizontalAlignment = Enum.HorizontalAlignment.Center
+		elementsListing.SortOrder = Enum.SortOrder.LayoutOrder
+		elementsListing.Padding = UDim.new(0, 5)
+		
+		local ElementHandler = {}
+		
+function ElementHandler:CreateNotification(text, desc, durat)
+local NotificationHolder = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Module.Lua"))()
+local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Client.Lua"))()
+
+Notification:Notify(
+    {Title = text, Description = desc},
+    {OutlineColor = Color3.fromRGB(150, 0, 0),Time = durat, Type = "default"}
+)
+end
+
+		function ElementHandler:CreateButton(btnText, callback)
+			btnText = btnText or "Text Button"
+			callback = callback or function() end	
+			
+			local TextButton = Instance.new("TextButton")
+			local buttonCorner = Instance.new("UICorner")
+			
+			TextButton.Parent = newPage
+			TextButton.BackgroundColor3 = Color3.fromRGB(44, 48, 53)
+			TextButton.Position = UDim2.new(0.0245098043, 0, 0, 0)
+			TextButton.Size = UDim2.new(0, 291, 0, 32)
+			TextButton.AutoButtonColor = true
+			TextButton.Font = Enum.Font.Gotham
+			TextButton.Text = btnText
+			TextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+			TextButton.TextSize = 14.000
+			TextButton.ZIndex = 1
+			TextButton.MouseButton1Click:Connect(function()
+				callback()
+			end)
+
+			buttonCorner.CornerRadius = UDim.new(0, 3)
+			buttonCorner.Name = "buttonCorner"
+			buttonCorner.Parent = TextButton
+		end
+		
+		function ElementHandler:CreateToggle(togInfo, callback)
+			togInfo = togInfo or "Toggle"
+			callback = callback or function() end	
+
+			local toggleButton = Instance.new("TextButton")
+			local toggleButtonCover = Instance.new("UICorner")
+			local toggle = Instance.new("Frame")
+			local toggleCorner = Instance.new("UICorner")
+			local toggleInfo = Instance.new("TextLabel")
+
+			toggleButton.Name = "toggleButton"
+			toggleButton.Parent = newPage
+			toggleButton.BackgroundColor3 = Color3.fromRGB(44, 48, 53)
+			toggleButton.Position = UDim2.new(0.0245098043, 0, 0, 0)
+			toggleButton.Size = UDim2.new(0, 291, 0, 32)
+			toggleButton.AutoButtonColor = true
+			toggleButton.Font = Enum.Font.Gotham
+			toggleButton.Text = ""
+			toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+			toggleButton.TextSize = 14.000
+
+			toggleButtonCover.CornerRadius = UDim.new(0, 3)
+			toggleButtonCover.Name = "toggleButtonCover"
+			toggleButtonCover.Parent = toggleButton
+
+			toggle.Name = "toggle"
+			toggle.Parent = toggleButton
+			toggle.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+			toggle.Position = UDim2.new(0.0240549836, 0, 0.15625, 0)
+			toggle.Size = UDim2.new(0, 22, 0, 22)
+
+			toggleCorner.CornerRadius = UDim.new(0, 888)
+			toggleCorner.Name = "toggleCorner"
+			toggleCorner.Parent = toggle
+
+			toggleInfo.Name = "toggleInfo"
+			toggleInfo.Parent = toggleButton
+			toggleInfo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			toggleInfo.BackgroundTransparency = 1.000
+			toggleInfo.Position = UDim2.new(0.130584195, 0, 0, 0)
+			toggleInfo.Size = UDim2.new(0, 230, 0, 32)
+			toggleInfo.Font = Enum.Font.Gotham
+			toggleInfo.Text = togInfo --- We set our custom text here
+			toggleInfo.TextColor3 = Color3.fromRGB(255, 255, 255)
+			toggleInfo.TextSize = 14.000
+			toggleInfo.TextXAlignment = Enum.TextXAlignment.Left
+			
+			local tog = false
+			
+			toggleButton.MouseButton1Click:Connect(function()
+				tog = not tog
+				callback(tog) -- Callbacks whenever we toggle
+				if tog then 
+					game.TweenService:Create(toggle, TweenInfo.new(0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
+						BackgroundColor3 = Color3.fromRGB(150, 0, 0)
+					}):Play()
+					--- We put our animation here when the toggle is on
+				else
+					game.TweenService:Create(toggle, TweenInfo.new(0.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
+						BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+					}):Play()
+					---We Put our animation here when the toggle is off
+				end
+			end)
+		end
+
+function ElementHandler:CreateLabel(labelText)
+		    labelText = labelText or "Text Label"
+			
+			local TextLabel = Instance.new("TextLabel")
+			local labelCorner = Instance.new("UICorner")
+			
+			TextLabel.Parent = newPage
+			TextLabel.BackgroundColor3 = Color3.fromRGB(44, 48, 53)
+			TextLabel.Position = UDim2.new(0.0245098043, 0, 0, 0)
+			TextLabel.Size = UDim2.new(0, 291, 0, 32)
+			TextLabel.Font = Enum.Font.Gotham
+			TextLabel.Text = labelText
+			TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+			TextLabel.TextSize = 14.000
+			TextLabel.ZIndex = 1
+
+			labelCorner.CornerRadius = UDim.new(0, 3)
+			labelCorner.Name = "labelCorner"
+			labelCorner.Parent = TextLabel
+end 
+
+		function ElementHandler:CreateTextbox(btext, callback)
+			
+			callback = callback or function() end	
+			
+			local TextBox = Instance.new("TextBox")
+			local boxCorner = Instance.new("UICorner")
+			
+			TextBox.Parent = newPage
+			TextBox.BackgroundColor3 = Color3.fromRGB(44, 48, 53)
+			TextBox.BorderSizePixel = 0
+			TextBox.Position = UDim2.new(0.0245098043, 0, 0, 0)
+			TextBox.Size = UDim2.new(0, 291, 0, 32)
+			TextBox.Font = Enum.Font.Gotham
+			TextBox.Text = btext
+			TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+			TextBox.TextSize = 14.000
+			TextBox.ZIndex = 1
+			TextBox.MouseButton1Click:Connect(function()
+				callback()
+			end) 
+			
+			boxCorner.CornerRadius = UDim.new(0, 3)
+			boxCorner.Name = "boxCorner"
+			boxCorner.Parent = TextBox
+		end 
+		
+		return ElementHandler
+	end
+	return TabHandler
+end 
+
+return Library
