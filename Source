@@ -228,7 +228,7 @@ Notification:Notify(
 )
 end
 
-		function ElementHandler:CreateButton(btnText, callback)
+		function ElementHandler:Button(btnText, callback)
 			btnText = btnText or "Text Button"
 			callback = callback or function() end	
 			
@@ -254,7 +254,7 @@ end
 			buttonCorner.Parent = TextButton
 		end
 		
-		function ElementHandler:CreateToggle(togInfo, callback)
+		function ElementHandler:Toggle(togInfo, callback)
 			togInfo = togInfo or "Toggle"
 			callback = callback or function() end	
 
@@ -320,7 +320,7 @@ end
 			end)
 		end
 
-function ElementHandler:CreateLabel(labelText)
+function ElementHandler:Label(labelText)
 		    labelText = labelText or "Text Label"
 			
 			local TextLabel = Instance.new("TextLabel")
@@ -341,7 +341,7 @@ function ElementHandler:CreateLabel(labelText)
 			labelCorner.Parent = TextLabel
 end 
 
-        function ElementHandler:CreateTextbox(Name,Default,Callback)
+        function ElementHandler:Textbox(Name,Default,Callback)
             local Name = Name or "Textbox"
             local Default = Default or ""
             local Callback = Callback or function() end
@@ -406,7 +406,7 @@ end
             end)
         end
 		
-        function ElementHandler:CreateSlider(Name,Min,Max,Callback)
+        function ElementHandler:Slider(Name,Min,Max,Callback)
             local Name = Name or "Slider"
             local Callback = Callback or function() end
             local Max = Max or 500
@@ -527,7 +527,7 @@ end
             end)
         end                    
 
-   function ElementHandler:CreateDropdown(dropInfo, list, callback)
+   function ElementHandler:Dropdown(dropInfo, list, callback)
                                     callback = callback or function() end
                                     list = list or {}
                                     dropInfo = dropInfo or ""
