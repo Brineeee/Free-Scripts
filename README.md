@@ -16,7 +16,7 @@
 
 ```html
 - Adding Library
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Brineeee/Free-Scripts/main/Source"))()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Brineeee/Free-Scripts/main/SourceFE"))()
 ```
 
 ```html
@@ -69,7 +69,7 @@ Tab1:CreateLabel("Example Label")
 
 ```html
 - Want a full library? I got you! 
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Brineeee/Free-Scripts/main/Source"))()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Brineeee/Free-Scripts/main/SourceFE"))()
 
 local win = Library:CreateWindow()
 local Tab1 = win:CreateTab("Tab 1")
